@@ -1,80 +1,108 @@
-# LLM Work
+<p align="center">
+  <img src="./.github/assets/llm-work-hero.png" alt="LLM Work hero banner" width="100%">
+</p>
 
-<div align="center">
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&pause=1300&color=7DD3FC&center=true&vCenter=true&width=980&lines=LLM+Work+%2F%2F+PyTorch+Machine+Translation;Transformer+Variants+%2F%2F+MHA+MQA+GQA+MoE;Coursework+Code+Release+with+Clean+Open-Source+Presentation" alt="LLM Work typing intro" />
+</p>
 
-English-French / English-German machine translation experiments built with PyTorch Transformer variants.
+<p align="center">
+  <strong>English</strong>
+</p>
 
-[Quick Start](#quick-start) | [Project Highlights](#project-highlights) | [Project Structure](#project-structure) | [Experiments](#experiments)
+<p align="center">
+  <strong>LLM Work presents a compact research-style machine translation project:</strong>
+  PyTorch Transformer training, attention-variant comparison, tokenization pipelines, BLEU evaluation, and a lightweight knowledge editing demo.
+</p>
 
-</div>
+<p align="center">
+  <strong>Built for clean public release:</strong>
+  the repository keeps reusable code and documentation while excluding reports, figures, and heavy training artifacts.
+</p>
 
-## Overview
+<p align="center">
+  <a href="#quick-start"><img src="https://img.shields.io/badge/QUICK_START-5_MIN-0EA5E9?style=for-the-badge" alt="Quick Start"></a>
+  <a href="#model-architecture"><img src="https://img.shields.io/badge/MODEL-ARCHITECTURE-F472B6?style=for-the-badge" alt="Model Architecture"></a>
+  <a href="#training--evaluation"><img src="https://img.shields.io/badge/TRAINING-EVALUATION-84CC16?style=for-the-badge" alt="Training and Evaluation"></a>
+  <a href="#code-organization"><img src="https://img.shields.io/badge/CODE-ORGANIZATION-F59E0B?style=for-the-badge" alt="Code Organization"></a>
+  <a href="#project-notes"><img src="https://img.shields.io/badge/PROJECT-NOTES-334155?style=for-the-badge" alt="Project Notes"></a>
+</p>
 
-This repository contains a compact machine translation project for coursework and self-study. It implements a full training and evaluation pipeline around Transformer-based sequence-to-sequence models, with a focus on comparing different attention designs and lightweight sparse feed-forward routing.
+<p align="center">
+  <img src="https://img.shields.io/badge/python-%3E%3D3.10-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/PyTorch-Transformer-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch Transformer">
+  <img src="https://img.shields.io/badge/datasets-HuggingFace-FCC624" alt="Hugging Face Datasets">
+  <img src="https://img.shields.io/badge/tokenizers-word%20%2B%20BPE-14B8A6" alt="Word and BPE tokenizers">
+  <img src="https://img.shields.io/badge/attention-MHA%20%7C%20MQA%20%7C%20GQA-0EA5E9" alt="Attention variants">
+  <img src="https://img.shields.io/badge/MoE-top--k%20routing-8B5CF6" alt="MoE routing">
+  <img src="https://img.shields.io/badge/entrypoints-3-3B82F6" alt="3 entrypoints">
+  <img src="https://img.shields.io/badge/core_modules-7-F59E0B" alt="7 core modules">
+</p>
 
-The codebase includes:
+<a id="model-architecture"></a>
+## 🧠✨ Model Architecture \(^_^)/ 
 
-- A baseline Transformer encoder-decoder for neural machine translation
-- Unified support for `MHA`, `MQA`, and `GQA` through configurable KV heads
-- Optional token-level `MoE` feed-forward blocks with auxiliary balancing loss
-- Word-level and BPE tokenization pipelines
-- Dataset loaders for `Multi30k`, `OPUS-100`, and `OPUS Books`
-- Reproducible training, BLEU evaluation, decoding, and experiment runner scripts
-- A small knowledge editing demo showing a local rank-one edit idea in PyTorch
+<p align="center">
+  <strong>🧩 one encoder-decoder core • 👀 configurable attention surfaces • 🚀 sparse routing as an optional extension</strong>
+</p>
 
-## Project Highlights
+This project centers on a compact Transformer-based machine translation system with a clear comparison axis across attention mechanisms and feed-forward routing strategies.
 
-### 1. Configurable Attention Variants
+What defines the model surface:
 
-The implementation exposes multiple attention styles behind one module:
+- 👀 **attention is configurable**: `MHA`, `MQA`, and `GQA` are exposed through one shared attention implementation
+- 🧠 **the core stays readable**: encoder, decoder, positional encoding, masking, and decoding are implemented directly in PyTorch
+- 🚀 **MoE is optional**: the dense FFN can be swapped for a token-level top-k Mixture-of-Experts block
+- 🧪 **comparison is easy**: the same training loop and dataset pipeline can be reused across model variants
 
-- `MHA`: standard multi-head attention
-- `MQA`: multi-query attention with shared key/value heads
-- `GQA`: grouped-query attention as a middle ground between MHA and MQA
+At the system surface, this repository includes:
 
-This makes the repository useful for controlled architecture comparisons without changing the overall training pipeline.
+- 🛠️ **1 training pipeline** in [src/train.py](./src/train.py)
+- 📦 **1 model stack** in [src/model.py](./src/model.py)
+- 🧾 **2 tokenizer paths** in [src/data.py](./src/data.py): word-level and BPE
+- 🎛️ **3 attention modes**: `MHA`, `MQA`, `GQA`
+- 🌐 **3 dataset options**: `Multi30k`, `OPUS-100`, `OPUS Books`
+- 🤖 **1 knowledge edit demo** in [src/knowledge_edit_demo.py](./src/knowledge_edit_demo.py)
 
-### 2. Lightweight MoE Feed-Forward Layer
+In short: the project is not just a single translation script, but a **small, inspectable, and comparison-friendly Transformer MT workspace** `(^_^)`
 
-The standard Transformer FFN can be replaced with a token-level Mixture-of-Experts block:
+---
 
-- Top-k routing
-- Multiple expert FFNs
-- Simple load-balancing auxiliary loss
+<a id="quick-start"></a>
+## 🚀 Quick Start \(^o^)/
 
-This keeps the code short and readable while still demonstrating a sparse routing mechanism.
+### 🧰 What You Need
 
-### 3. End-to-End Training Pipeline
+| Item | Why It Matters |
+| --- | --- |
+| `Python 3.10+` | required for training, decoding, dataset loading, and tokenizer building |
+| `pip` | enough for installing the lightweight dependency set |
 
-The repository is not only a model definition dump. It also includes:
-
-- Dataset loading and split handling
-- Tokenizer training and saving
-- Training / validation loops
-- BLEU evaluation with greedy or beam decoding
-- Preset experiment launcher for quick and full runs
-
-## Quick Start
-
-### Environment
+### 1. 🔍 Install Dependencies
 
 ```bash
+git clone https://github.com/xiao-zi-chen/llm-work.git
+cd llm-work
 pip install -r requirements.txt
 ```
 
-### Run a quick experiment suite
+### 2. 🚀 Run a Quick Experiment Suite
 
 ```bash
 python src/run_experiments.py --preset quick
 ```
 
-### Run a smoke test
+This runs a small comparison preset and writes local outputs under `outputs/`.
+
+### 3. 🧪 Run a Smoke Test
 
 ```bash
 python src/run_experiments.py --preset smoke
 ```
 
-### Train a single model
+This is the fastest way to verify that the full pipeline works end to end.
+
+### 4. 🛠️ Train a Single Translation Model
 
 ```bash
 python src/train.py \
@@ -89,7 +117,7 @@ python src/train.py \
   --test-size 300
 ```
 
-### Try a more advanced setting
+### 🧭 Try a Stronger Configuration
 
 ```bash
 python src/train.py \
@@ -108,12 +136,82 @@ python src/train.py \
   --test-size 400
 ```
 
-## Project Structure
+### 💬 Main Entry Points
+
+```text
+src/train.py
+src/run_experiments.py
+src/knowledge_edit_demo.py
+```
+
+---
+
+<a id="training--evaluation"></a>
+## 🛰️📊 Training & Evaluation \(^o^)/
+
+<p align="center">
+  <strong>📚 dataset loading • 🧾 tokenizer training • 📈 optimization and BLEU • 🔬 reproducible preset runs</strong>
+</p>
+
+The repository includes the full path from raw parallel text to decoded samples and metric files.
+
+What the pipeline covers:
+
+- 📚 loads translation pairs from Hugging Face datasets
+- 🧾 trains tokenizers and saves them alongside model outputs
+- 📈 trains with AdamW, Noam scheduling, label smoothing, and checkpoint selection by validation loss
+- 🔍 evaluates with greedy decoding or beam search
+- 🌍 reports corpus BLEU with `sacrebleu`
+
+### ✨ Supported Comparison Axes
+
+| Axis | Options | Why It Matters |
+| --- | --- | --- |
+| attention | `mha`, `mqa`, `gqa` | compare standard, shared-KV, and grouped-KV attention |
+| feed-forward | dense, `--use-moe` | compare standard FFN with sparse top-k routing |
+| tokenizer | `word`, `bpe` | compare simple vocabulary baselines and subword modeling |
+| dataset | `multi30k`, `opus100`, `opus_books` | test across different scales and language pairs |
+| decoding | greedy, beam search | trade off speed and translation quality |
+
+### 🧪 Preset Runner
+
+The preset launcher in [src/run_experiments.py](./src/run_experiments.py) supports:
+
+- `smoke`: fastest sanity check
+- `quick`: small but meaningful comparison runs
+- `full`: larger coursework-scale runs
+
+Generated outputs such as checkpoints, tokenizers, metrics files, and sample translations stay in local `outputs/` and are intentionally excluded from version control.
+
+---
+
+<a id="code-organization"></a>
+## 🧩🗂️ Code Organization (•‿•)
+
+<p align="center">
+  <strong>👀 small public code release • 🛠️ focused module boundaries • 📦 no report clutter in the tracked repository</strong>
+</p>
+
+If you want to understand the project quickly, start here:
+
+- 🚀 read [src/model.py](./src/model.py) for the Transformer, attention, and MoE definitions
+- 🧭 read [src/data.py](./src/data.py) for dataset loading, normalization, and tokenizer logic
+- 🧠 read [src/train.py](./src/train.py) for training, validation, BLEU, and decoding
+- 📜 read [src/run_experiments.py](./src/run_experiments.py) for preset experiment orchestration
+- 🔬 read [src/knowledge_edit_demo.py](./src/knowledge_edit_demo.py) for the toy rank-one edit demo
+
+### 📦 Public Repository Layout
 
 ```text
 .
+|-- .github/
+|   `-- assets/
+|       `-- llm-work-hero.png
+|-- docs/
+|   `-- image_prompt.md
 |-- requirements.txt
-|-- src
+|-- src/
+|   |-- __init__.py
 |   |-- data.py
 |   |-- knowledge_edit_demo.py
 |   |-- model.py
@@ -123,70 +221,44 @@ python src/train.py \
 `-- README.md
 ```
 
-## Core Components
+### 🧾 Module Guide
 
-### `src/model.py`
+| File | Role |
+| --- | --- |
+| [src/model.py](./src/model.py) | Transformer encoder-decoder, MHA/MQA/GQA attention, dense FFN, MoE FFN |
+| [src/data.py](./src/data.py) | dataset loading, normalization, tokenizers, dataloaders |
+| [src/train.py](./src/train.py) | training CLI, loss computation, evaluation, decoding, checkpointing |
+| [src/run_experiments.py](./src/run_experiments.py) | experiment matrix and preset execution |
+| [src/utils.py](./src/utils.py) | seeds, scheduler, JSON helpers, counters, device helpers |
+| [src/knowledge_edit_demo.py](./src/knowledge_edit_demo.py) | toy knowledge editing example with local rank-one update |
 
-Defines the modeling stack:
+---
 
-- Sinusoidal positional encoding
-- Configurable attention block for MHA / MQA / GQA
-- Dense FFN and sparse MoE FFN
-- Transformer encoder-decoder model
+<a id="project-notes"></a>
+## 🎛️📝 Project Notes (-_-)
 
-### `src/data.py`
+<p align="center">
+  <strong>🧹 code-first release • 🎓 coursework origin • 📉 reports and heavy outputs removed from version control</strong>
+</p>
 
-Handles:
+This public repository is intentionally narrower than the original working directory.
 
-- Dataset loading from Hugging Face datasets
-- Text normalization
-- Word tokenizer and BPE tokenizer training
-- Batch collation and dataloader creation
+What is included:
 
-### `src/train.py`
+- ✅ reusable source code
+- ✅ dependency file
+- ✅ presentation-grade README and hero image
 
-Provides:
+What is excluded:
 
-- CLI training interface
-- Validation and BLEU evaluation
-- Greedy decoding and beam search decoding
-- Checkpoint saving and metrics export
+- 🛑 report documents
+- 🛑 figure exports used only for submission materials
+- 🛑 trained checkpoints and other heavy generated artifacts
 
-### `src/run_experiments.py`
+The goal is to keep the repository clean, fast to browse, and suitable as a portfolio-style code release.
 
-Runs predefined experiment suites for:
+---
 
-- smoke testing
-- quick coursework-scale comparisons
-- larger full runs
+## 📄 License
 
-### `src/knowledge_edit_demo.py`
-
-Implements a concise demo of a local orthogonal rank-one edit for factual memory manipulation in a toy setting.
-
-## Experiments
-
-The experiment runner supports three presets:
-
-- `smoke`: fastest sanity check
-- `quick`: small but meaningful comparison runs
-- `full`: larger training configurations
-
-Outputs are written under `outputs/` during local runs and include:
-
-- model checkpoints
-- tokenizers
-- `metrics.json`
-- decoded translation samples
-
-These generated artifacts are intentionally excluded from version control in this public repository.
-
-## Notes
-
-- The project is designed to be compact and readable rather than heavily optimized.
-- Default settings are sized to make coursework reproduction easier on limited hardware.
-- BLEU and runtime will vary with GPU availability, tokenizer choice, dataset size, and decoding strategy.
-
-## Acknowledgement
-
-This repository is organized as a clean code release derived from a course project, with the public version focused on reusable implementation code rather than report materials.
+No license file has been added yet. If you want, I can add an open-source license next.
